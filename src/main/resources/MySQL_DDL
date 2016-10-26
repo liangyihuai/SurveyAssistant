@@ -1,0 +1,34 @@
+
+CREATE TABLE ip
+(
+    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    ip VARCHAR(35),
+    flag INT(11),
+    remark VARCHAR(30)
+);
+CREATE TABLE user
+(
+    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    userName VARCHAR(30),
+    password VARCHAR(30),
+    level INT(11),
+    createTime DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE systemInfo
+(
+    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    topInfo TEXT
+);
+CREATE TABLE respondent
+(
+    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(30),
+    nationality VARCHAR(30),
+    school VARCHAR(70),
+    education VARCHAR(30),
+    major VARCHAR(70),
+    gender VARCHAR(10),
+    residence VARCHAR(30),
+    surveyFinish INT(11)
+);
