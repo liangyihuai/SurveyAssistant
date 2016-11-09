@@ -6,8 +6,8 @@
         INSERT INTO systemInfo (time, topInfo) value(#{time}, #{topInfo});
     </insert>
 
-    <select id="search">
-
+    <select id="search" resultType="com.huai.assist.pojo.SystemInfo">
+        SELECT * FROM systemInfo LIMIT #{currentPage},#{pageSize}
     </select>
 
 </mapper>

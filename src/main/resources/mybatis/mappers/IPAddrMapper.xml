@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huai.assist.repository.IPAddrMapper">
+
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT count(1) FROM ip;
+    </select>
+
+    <insert id="saveIPs" parameterType="java.util.List">
+        insert into ip (ip, remark) VALUES
+        <foreach collection="ipAdds" item="addr"  separator=",">
+            (#{addr.ip}, #{addr.remark})
+        </foreach>
+    </insert>
+
+    <select id="getAllIPs" resultType="java.lang.String">
+        SELECT ip FROM ip;
+    </select>
+
+    <select id="getCountGroupByAddr" resultType="java.util.Map">
+        SELECT remark AS addr, COUNT(remark) AS addrCount FROM ip GROUP BY remark
+    </select>
+
+</mapper>

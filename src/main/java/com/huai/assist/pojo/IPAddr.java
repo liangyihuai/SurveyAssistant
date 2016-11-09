@@ -40,4 +40,14 @@ public class IPAddr {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    @Override
+    public String toString() {
+        return "IPAddr{" +
+                "id=" + id +
+                ", ip='" + ip + '\'' +
+                ", flag=" + flag +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

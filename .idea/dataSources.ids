@@ -30,7 +30,7 @@
         <data-type>int(11)|0</data-type>
       </column>
       <column id="13" parent="6" name="remark">
-        <data-type>varchar(30)|0</data-type>
+        <data-type>varchar(60)|0</data-type>
       </column>
       <key id="14" parent="6" name="PRIMARY">
         <columns>id</columns>

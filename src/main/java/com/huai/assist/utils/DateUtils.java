@@ -10,6 +10,8 @@ import java.util.Date;
 public class DateUtils {
 
     public static Date parseStrToDate(String str){
+        if(str == null)return null;
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date result = null;
         try {

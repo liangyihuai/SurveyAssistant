@@ -33,7 +33,7 @@ public class IPUtils {
             in = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
             String str;
-            while((str = in.readLine()) != null){
+            while((str = in.readLine()) != null && !"".equals(str.trim())){
                 result.add(str);
             }
         } catch (IOException e) {

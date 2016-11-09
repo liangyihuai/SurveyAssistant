@@ -32,6 +32,8 @@ public class SystemInfoController {
         return systemInfo;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/search")
     public List<SystemInfo> searchSystemInfo(String timeStr, int pageSize, int currentPage){
         return this.systemInfoService.search(timeStr, pageSize, currentPage);
     }
