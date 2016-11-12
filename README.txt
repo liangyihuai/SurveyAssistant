@@ -53,10 +53,10 @@ http://localhost:8080/assist/visiting/statistic
 参数：无
 
 返回数据的JSON格式：
-{"广东省":2,"上海市‚":1,"北京市":1}
+{"广东省":2,"上海市‚":1,"北京市":1"}
 
 
-#3-1、查询“被调查者”的相关信息（这个数据库表是自己建立的，里面的数据也是自己添加的），这里用到了组合条件查询
+#3-1、查询“被调查者”的相关信息，这里用到了组合条件查询
 http://localhost:8080/assist/respondent/search?school=u&nationality=han
 参数，即查询条件：
 school #学校
