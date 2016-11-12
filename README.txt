@@ -1,12 +1,12 @@
 写在前面：
-1、
-
+1、这里我所写的url，可以直接复制到浏览器，回车。（有一些需要修改一下参数的value :）），举一个栗子：http://localhost:8080/assist/sys/search?timeStr=2016-11-11&page.pageSize=2&page.currentPage=1，这个url的参数有三个，可以直接复制到浏览器中。
+2、下面我用如1-1、2-1这样的表示不同的段落，第一个数字表示它将会用于哪个功能模块。
 
 #1-1、查询服务器top命令所显示的信息。
 http://localhost:8080/assist/sys/search?timeStr=2016-11-11&page.pageSize=2&page.currentPage=1
 
 参数：
-timeStr
+timeStr #类型为字符串， 格式为：yyyy-MM-dd hh:mm:ss, 举一个栗子：输入“2016-11-11”， 查询出这一天所有的记录；输入“2016-11-11 13”，查询出这一天下午一点这个小时内所有的数据；输入“2016-11-11 13：06”，将查询出这一分钟内的所有数据。
 page.currentPage  #(the first page is 1)
 page.pageSize
 
