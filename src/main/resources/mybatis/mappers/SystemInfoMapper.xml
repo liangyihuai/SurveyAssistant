@@ -3,11 +3,32 @@
 <mapper namespace="com.huai.assist.repository.SystemInfoMapper">
 
     <insert id="save" parameterType="com.huai.assist.pojo.SystemInfo">
-        INSERT INTO systemInfo (time, topInfo) value(#{time}, #{topInfo});
+        INSERT INTO systemInfo (createTime, topInfo) value(#{createTime}, #{topInfo});
     </insert>
 
-    <select id="search" resultType="com.huai.assist.pojo.SystemInfo">
-        SELECT * FROM systemInfo LIMIT #{currentPage},#{pageSize}
+    <select id="searchWithinDay" parameterType="com.huai.assist.pojo.SystemInfoSearchCondition"
+            resultType="com.huai.assist.pojo.SystemInfo">
+        SELECT * FROM systemInfo WHERE UNIX_TIMESTAMP(createTime) BETWEEN UNIX_TIMESTAMP(#{timeStr}) AND (UNIX_TIMESTAMP(#{timeStr})+86399)
+        <if test="page != null and page.currentPage >= 0 and page.pageSize > 0">
+            LIMIT #{page.currentPage} , #{page.pageSize}
+        </if>
     </select>
+
+    <select id="searchWithinHour" resultType="com.huai.assist.pojo.SystemInfo">
+        SELECT * FROM systemInfo WHERE UNIX_TIMESTAMP(createTime) BETWEEN UNIX_TIMESTAMP(#{timeStr}) AND (UNIX_TIMESTAMP(#{timeStr})+3599)
+        <if test="page != null and page.currentPage >= 0 and page.pageSize > 0">
+            LIMIT #{page.currentPage} , #{page.pageSize}
+        </if>
+    </select>
+
+    <select id="searchWithinMinute" resultType="com.huai.assist.pojo.SystemInfo">
+        SELECT * FROM systemInfo WHERE UNIX_TIMESTAMP(createTime) BETWEEN UNIX_TIMESTAMP(#{timeStr}) AND (UNIX_TIMESTAMP(#{timeStr})+59)
+        <if test="page != null and page.currentPage >= 0 and page.pageSize > 0">
+            LIMIT #{page.currentPage} , #{page.pageSize}
+        </if>
+    </select>
+
+
+
 
 </mapper>

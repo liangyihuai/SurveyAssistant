@@ -7,7 +7,15 @@ import java.util.Date;
  */
 public class SystemInfo {
     private int id;
-    private Date time;
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     private String topInfo;
 
@@ -19,19 +27,20 @@ public class SystemInfo {
         this.id = id;
     }
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
     public String getTopInfo() {
         return topInfo;
     }
 
     public void setTopInfo(String topInfo) {
         this.topInfo = topInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "SystemInfo{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", topInfo='" + topInfo + '\'' +
+                '}';
     }
 }

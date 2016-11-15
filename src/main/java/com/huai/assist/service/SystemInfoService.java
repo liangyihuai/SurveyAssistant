@@ -1,6 +1,7 @@
 package com.huai.assist.service;
 
 import com.huai.assist.pojo.SystemInfo;
+import com.huai.assist.pojo.SystemInfoSearchCondition;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface SystemInfoService {
 
     String getTopInfo();
 
-    List<SystemInfo> search(String dateStr, int pageSize, int currentPage);
+    List<SystemInfo> search(SystemInfoSearchCondition condition);
 
     int save(SystemInfo systemInfo);
 }

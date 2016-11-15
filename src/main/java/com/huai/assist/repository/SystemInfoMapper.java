@@ -1,6 +1,7 @@
 package com.huai.assist.repository;
 
 import com.huai.assist.pojo.SystemInfo;
+import com.huai.assist.pojo.SystemInfoSearchCondition;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -11,7 +12,11 @@ import java.util.List;
  */
 public interface SystemInfoMapper {
 
-    List<SystemInfo> search(@Param("date") Date date, @Param("pageSize") int pageSize, @Param("currentPage") int currentPage);
+    List<SystemInfo> searchWithinDay(SystemInfoSearchCondition condition);
+
+    List<SystemInfo> searchWithinHour(SystemInfoSearchCondition condition);
+
+    List<SystemInfo> searchWithinMinute(SystemInfoSearchCondition condition);
 
     int save(SystemInfo systemInfo);
 }

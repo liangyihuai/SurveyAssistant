@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * Created by liangyh on 11/5/16.
  */
-@Component
+@Component("IPAddrService")
 public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
 
     @Autowired
@@ -38,7 +38,7 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
         return iPAddrMapper.getAllIPs();
     }
 
-    @Scheduled(cron="0/5 * *  * * ? ")   //每5秒执行一次
+    @Scheduled(cron="0/15 * *  * * ? ")   //每15秒执行一次
     public void saveIPsByIPStrs() {
         List<String> ips = IPUtils.getRemoteIPAddr(80);
         System.out.println("-----------save ips By p strs--------");
@@ -58,9 +58,9 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
             IPAddr newIpAddr = getIPAddr(ip);
 
             if(newIpAddr != null){
-                ipSet.add(newIpAddr.getIp());
                 list.add(newIpAddr);
             }
+            ipSet.add(ip);
         }
         if(list.size() > 0){
             return saveIPsByIPAddrs(list);
@@ -78,9 +78,6 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
         if(containsIPAddr(ip)) return null;
 
         String addr = AddressUtils.getAddressByIP(ip);
-
-        System.out.println("---------addr = "+addr+"-------------");
-
         if(addr != null && !"".equals(addr.trim())){
             IPAddr ipAddr = new IPAddr();
             ipAddr.setIp(ip);

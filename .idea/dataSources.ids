@@ -63,7 +63,7 @@
         <data-type>int(11)|0</data-type>
         <sequence-identity>1</sequence-identity>
       </column>
-      <column id="22" parent="8" name="time">
+      <column id="22" parent="8" name="createTime">
         <mandatory>1</mandatory>
         <data-type>timestamp|0</data-type>
         <default-expression>CURRENT_TIMESTAMP</default-expression>

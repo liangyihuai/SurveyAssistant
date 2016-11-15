@@ -2,12 +2,15 @@ package com.huai.assist.service.impl;
 
 
 import com.huai.assist.pojo.SystemInfo;
+import com.huai.assist.pojo.SystemInfoSearchCondition;
 import com.huai.assist.repository.SystemInfoMapper;
 import com.huai.assist.service.SystemInfoService;
 import com.huai.assist.utils.DateUtils;
 import com.huai.assist.utils.SystemInfoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,9 +28,23 @@ public class SystemInfoServiceImpl implements SystemInfoService {
         return SystemInfoUtils.getCUP_Memory_Thread_Info();
     }
 
-    public List<SystemInfo> search(String dateStr, int pageSize, int currentPage) {
-        Date date = DateUtils.parseStrToDate(dateStr);
-        return systemInfoMapper.search(date, pageSize, currentPage);
+    /**
+     * yyyy-MM-dd hh:mm:ss
+     *
+     * @return
+     */
+    public List<SystemInfo> search(SystemInfoSearchCondition condition) {
+        if(condition == null || condition.getTimeStr() == null)return null;
+
+        if(condition.getTimeStr().length() == 10){
+            return systemInfoMapper.searchWithinDay(condition);
+        }else if(condition.getTimeStr().length() == 12 || condition.getTimeStr().length() == 13){
+            return systemInfoMapper.searchWithinHour(condition);
+        }else if(condition.getTimeStr().length() == 15 || condition.getTimeStr().length() == 16){
+            return systemInfoMapper.searchWithinMinute(condition);
+        }else{
+            return null;
+        }
     }
 
     public int save(SystemInfo systemInfo){

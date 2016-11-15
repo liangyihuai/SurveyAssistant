@@ -29,7 +29,7 @@ public class SystemInfoUtils {
             String str = null;
             int count = 0;
             while ((str = in.readLine()) != null && count < COUNT) {
-                builder.append(str);
+                builder.append(str+"\n");
                 count++;
             }
         } catch (Exception e) {
