@@ -1,13 +1,16 @@
 package com.huai.assist.service.impl;
 
 
+import com.huai.assist.pojo.Page;
 import com.huai.assist.pojo.SystemInfo;
 import com.huai.assist.pojo.SystemInfoSearchCondition;
+import com.huai.assist.pojo.TimeFlagEnum;
 import com.huai.assist.repository.SystemInfoMapper;
 import com.huai.assist.service.SystemInfoService;
 import com.huai.assist.utils.DateUtils;
 import com.huai.assist.utils.SystemInfoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -33,18 +36,38 @@ public class SystemInfoServiceImpl implements SystemInfoService {
      *
      * @return
      */
-    public List<SystemInfo> search(SystemInfoSearchCondition condition) {
+
+    public Page<List<SystemInfo>> search(SystemInfoSearchCondition condition) {
         if(condition == null || condition.getTimeStr() == null)return null;
 
-        if(condition.getTimeStr().length() == 10){
-            return systemInfoMapper.searchWithinDay(condition);
-        }else if(condition.getTimeStr().length() == 12 || condition.getTimeStr().length() == 13){
-            return systemInfoMapper.searchWithinHour(condition);
-        }else if(condition.getTimeStr().length() == 15 || condition.getTimeStr().length() == 16){
-            return systemInfoMapper.searchWithinMinute(condition);
+        Page<List<SystemInfo>> result = null;
+        if(condition.getPage() != null){
+            result = condition.getPage();
         }else{
-            return null;
+            result = new Page<List<SystemInfo>>();
         }
+
+        TimeFlagEnum timeFlag = null;
+        if(condition.getTimeStr().length() == 10){
+            timeFlag = TimeFlagEnum.DAY;
+        }else if(condition.getTimeStr().length() == 12 || condition.getTimeStr().length() == 13){
+            timeFlag = TimeFlagEnum.HOUR;
+        }else if(condition.getTimeStr().length() == 15 || condition.getTimeStr().length() == 16){
+            timeFlag = TimeFlagEnum.MINUTE;
+        }else{
+            return new Page<List<SystemInfo>>();
+        }
+        result.setItemCount(systemInfoMapper.count(condition, timeFlag.getTimeFlag()));
+        result.setData(systemInfoMapper.search(condition, timeFlag.getTimeFlag()));
+
+        return result;
+    }
+
+    @Scheduled(cron="0/45 * *  * * ? ")   //每xx秒执行一次
+    private void save(){
+        SystemInfo systemInfo = new SystemInfo();
+        systemInfo.setTopInfo(getTopInfo());
+        save(systemInfo);
     }
 
     public int save(SystemInfo systemInfo){

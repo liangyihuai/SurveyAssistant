@@ -1,5 +1,6 @@
 package com.huai.assist.controller;
 
+import com.huai.assist.pojo.Page;
 import com.huai.assist.pojo.SystemInfo;
 import com.huai.assist.pojo.SystemInfoSearchCondition;
 import com.huai.assist.service.SystemInfoService;
@@ -28,14 +29,12 @@ public class SystemInfoController {
         systemInfo.setCreateTime(new java.util.Date());
         systemInfo.setTopInfo(this.systemInfoService.getTopInfo());
 
-        this.systemInfoService.save(systemInfo);
-
         return systemInfo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/search")
-    public List<SystemInfo> searchSystemInfo(SystemInfoSearchCondition condition){
+    public Page<List<SystemInfo>> searchSystemInfo(SystemInfoSearchCondition condition){
         return this.systemInfoService.search(condition);
     }
 

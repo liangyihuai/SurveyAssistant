@@ -6,29 +6,51 @@
         INSERT INTO systemInfo (createTime, topInfo) value(#{createTime}, #{topInfo});
     </insert>
 
-    <select id="searchWithinDay" parameterType="com.huai.assist.pojo.SystemInfoSearchCondition"
-            resultType="com.huai.assist.pojo.SystemInfo">
-        SELECT * FROM systemInfo WHERE UNIX_TIMESTAMP(createTime) BETWEEN UNIX_TIMESTAMP(#{timeStr}) AND (UNIX_TIMESTAMP(#{timeStr})+86399)
-        <if test="page != null and page.currentPage >= 0 and page.pageSize > 0">
-            LIMIT #{page.currentPage} , #{page.pageSize}
-        </if>
+    <!--the flag is for hour, minute:2, second:3-->
+    <select id="search" resultType="com.huai.assist.pojo.SystemInfo">
+        SELECT * FROM systemInfo
+        <where>
+            UNIX_TIMESTAMP(createTime) BETWEEN UNIX_TIMESTAMP(#{condition.timeStr}) AND
+            <choose>
+
+                <when test="flag == 2">
+                    (UNIX_TIMESTAMP(#{condition.timeStr})+3599)
+                </when>
+
+                <when test="flag == 3">
+                    (UNIX_TIMESTAMP(#{condition.timeStr})+59)
+                </when>
+
+                <otherwise>
+                    (UNIX_TIMESTAMP(#{condition.timeStr})+86399)
+                </otherwise>
+            </choose>
+            <if test="condition.page != null and condition.page.start >= 0 and condition.page.pageSize > 0">
+                LIMIT #{condition.page.start} , #{condition.page.pageSize}
+            </if>
+        </where>
     </select>
 
-    <select id="searchWithinHour" resultType="com.huai.assist.pojo.SystemInfo">
-        SELECT * FROM systemInfo WHERE UNIX_TIMESTAMP(createTime) BETWEEN UNIX_TIMESTAMP(#{timeStr}) AND (UNIX_TIMESTAMP(#{timeStr})+3599)
-        <if test="page != null and page.currentPage >= 0 and page.pageSize > 0">
-            LIMIT #{page.currentPage} , #{page.pageSize}
-        </if>
+    <!--the flag is for hour, minute:2, second:3-->
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM systemInfo
+        <where>
+            UNIX_TIMESTAMP(createTime) BETWEEN UNIX_TIMESTAMP(#{condition.timeStr}) AND
+            <choose>
+
+                <when test="flag == 2">
+                    (UNIX_TIMESTAMP(#{condition.timeStr})+3599)
+                </when>
+
+                <when test="flag == 3">
+                    (UNIX_TIMESTAMP(#{condition.timeStr})+59)
+                </when>
+
+                <otherwise>
+                    (UNIX_TIMESTAMP(#{condition.timeStr})+86399)
+                </otherwise>
+            </choose>
+        </where>
     </select>
-
-    <select id="searchWithinMinute" resultType="com.huai.assist.pojo.SystemInfo">
-        SELECT * FROM systemInfo WHERE UNIX_TIMESTAMP(createTime) BETWEEN UNIX_TIMESTAMP(#{timeStr}) AND (UNIX_TIMESTAMP(#{timeStr})+59)
-        <if test="page != null and page.currentPage >= 0 and page.pageSize > 0">
-            LIMIT #{page.currentPage} , #{page.pageSize}
-        </if>
-    </select>
-
-
-
 
 </mapper>

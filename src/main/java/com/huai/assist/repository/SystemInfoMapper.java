@@ -11,12 +11,8 @@ import java.util.List;
  * Created by liangyh on 10/25/16.
  */
 public interface SystemInfoMapper {
-
-    List<SystemInfo> searchWithinDay(SystemInfoSearchCondition condition);
-
-    List<SystemInfo> searchWithinHour(SystemInfoSearchCondition condition);
-
-    List<SystemInfo> searchWithinMinute(SystemInfoSearchCondition condition);
+    int count(@Param("condition") SystemInfoSearchCondition condition, @Param("flag") int timeFlag);
+    List<SystemInfo> search(@Param("condition") SystemInfoSearchCondition condition, @Param("flag") int timeFlag);
 
     int save(SystemInfo systemInfo);
 }
