@@ -7,9 +7,9 @@
 * http://localhost:8080/assist/sys/search?timeStr=2016-11-11&page.pageSize=2&page.currentPage=1
 
 * 参数：
-    timeStr #类型为字符串， 格式为：yyyy-MM-dd hh:mm:ss, 举一个栗子：输入“2016-11-11”， 查询出这一天所有的记录；输入“2016-11-11 13”，查询出这一天下午一点这个小时内所有的数据；输入“2016-11-11 13：06”，将查询出这一分钟内的所有数据。
-    page.currentPage  #(the first page is 1)
-    page.pageSize
+timeStr #类型为字符串， 格式为：yyyy-MM-dd hh:mm:ss, 举一个栗子：输入“2016-11-11”， 查询出这一天所有的记录；输入“2016-11-11 13”，查询出这一天下午一点这个小时内所有的数据；输入“2016-11-11 13：06”，将查询出这一分钟内的所有数据。\n
+page.currentPage  #(the first page is 1)\n
+page.pageSize
 
 * JSON格式：
 <pre>
@@ -38,7 +38,6 @@
     "id": 0,
     "createTime": 1478939443070,
     "topInfo": "××××" #linux系统top命令运行之后显示的数据，每一行以回车符结尾
-
 }
 </pre>
 
