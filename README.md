@@ -1,17 +1,20 @@
 #写在前面：
 * 1、这里我所写的url，可以直接复制到浏览器，回车。（有一些需要修改一下参数的value :）），举一个栗子：http://localhost:8080/assist/sys/search?timeStr=2016-11-11&page.pageSize=2&page.currentPage=1，这个url的参数有三个，可以直接复制到浏览器中。
 * 2、下面我用如1-1、2-1这样的表示不同的段落，第一个数字表示它将会用于哪个功能模块。
+* 3、**返回的json格式以浏览器实际输出为准**，具体做法为：直接复制url到浏览器地址栏中回车。
 
 ***
 ##1-1、查询服务器top命令所显示的信息。
 * http://localhost:8080/assist/sys/search?timeStr=2016-11-11&page.pageSize=2&page.currentPage=1
 
 * 参数：
-timeStr #类型为字符串， 格式为：yyyy-MM-dd hh:mm:ss, 举一个栗子：输入“2016-11-11”， 查询出这一天所有的记录；输入“2016-11-11 13”，查询出这一天下午一点这个小时内所有的数据；输入“2016-11-11 13：06”，将查询出这一分钟内的所有数据。\n
-page.currentPage  #(the first page is 1)\n
+<pre>
+timeStr *类型为字符串， 格式为：yyyy-MM-dd hh:mm:ss, 举一个栗子：输入“2016-11-11”， 查询出这一天所有的记录；输入“2016-11-11 13”，查询出这一天下午一点这个小时内所有的数据；输入“2016-11-11 13：06”，将查询出这一分钟内的所有数据。*
+page.currentPage  #(the first page is 1)
 page.pageSize
+</pre>
 
-* JSON格式：
+* JSON格式：**以浏览器实际输出为准**
 <pre>
 [
     {
@@ -71,7 +74,7 @@ page.currentPage #(the first page is 1)
 page.pageSize #每一页的条数（大小）
 </pre>
   
-* 返回数据的JSON格式
+* 返回数据的JSON格式 **以浏览器实际输出为准**
 <pre>
 [
     {
@@ -98,3 +101,17 @@ page.pageSize #每一页的条数（大小）
     }
 ]
 </pre>
+
+##3-2导出（下载）
+* http://localhost:8080/assist/respondent/download
+* 参数，即查询条件： **注意：这里不能使用ajax发送请求，原因是使用ajax请求也意味着使用ajax接收数据。**
+* 请求方式: GET
+<pre>
+school #学校
+education #教育
+nationality #民族
+major #专业
+</pre>
+  
+* 返回数据:
+自动弹出下载框。
