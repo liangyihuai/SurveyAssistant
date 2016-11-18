@@ -66,8 +66,9 @@ nationality #民族
 major #专业
 page.currentPage #(the first page is 1)
 page.pageSize #每一页的条数（大小）
-
+  
 * 返回数据的JSON格式
+<pre>
 [
     {
         "id": 1,
@@ -92,3 +93,4 @@ page.pageSize #每一页的条数（大小）
         "surveyFinish": 0
     }
 ]
+</pre>
