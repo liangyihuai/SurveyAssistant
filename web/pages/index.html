@@ -49,11 +49,37 @@
 
 </header><!--/header-->
 
-<div class="container">
+<div class="container" >
     <p>System Information (refresh per 3s)</p>
-    <pre id="topInfoID">
+    <pre id="topInfoID" style="float:left;"></pre>
 
-    </pre>
+    <div class="panel panel-info" style="float:left; width:280px; margin-left:60px;" >
+        <div class="panel-heading">
+            <!--<h3 class="panel-title">面板标题</h3>-->
+            <h3 class="panel-title" align="center">查询历史纪录 请输入时间:</h3>
+        </div>
+        <div class="panel-body">
+
+            <div class="form-horizontal m-t ">
+                <div class="form-group ">
+                    <div class="col-sm-2" style="width: 100%;">
+                        <input id="time-id" type="datetime" class="form-control" onblur="search()" value="2016-11-17" style="text-align:center;">
+                    </div>
+                </div>
+            </div>
+
+            <table class="table">
+                <tbody align="center" id="tbody-id">
+                </tbody>
+            </table>
+
+            <div style="text-align:center;">
+                <span id="previous-page-id" onclick="previousSearchPage()" style="padding-right: 14%; cursor:pointer;"><<</span>
+                <span id="next-page-id" onclick="nextSearchPage()" style="padding-left: 14%; cursor:pointer;">>></span>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 <script src="../js/jquery.js"></script>
