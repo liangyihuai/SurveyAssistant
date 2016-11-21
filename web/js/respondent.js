@@ -106,9 +106,4 @@ function showSurvey(surveys) {
     tBody.innerHTML = str;
 }
 
-function download(){
-    var path = getSearchSurveyPath(null, null);
-
-}
-
 
