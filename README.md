@@ -1,68 +1,30 @@
-#写在前面：
-* 1、这里我所写的url，可以直接复制到浏览器，回车。（有一些需要修改一下参数的value :）），举一个栗子：http://localhost:8080/assist/sys/search?timeStr=2016-11-11&page.pageSize=2&page.currentPage=1，这个url的参数有三个，可以直接复制到浏览器中。
-* 2、下面我用如1-1、2-1这样的表示不同的段落，第一个数字表示它将会用于哪个功能模块。
-* 3、**返回的json格式以浏览器实际输出为准**，具体做法为：直接复制url到浏览器地址栏中回车。
+# SurveyAssistant
 
-***
-##1-1、查询服务器top命令所显示的信息。
-* http://localhost:8080/assist/sys/search?timeStr=2016-11-11&page.pageSize=2&page.currentPage=1
-
-* 参数：
-<pre>
-timeStr *类型为字符串， 格式为：yyyy-MM-dd hh:mm:ss, 举一个栗子：输入“2016-11-11”， 查询出这一天所有的记录；输入“2016-11-11 13”，查询出这一天下午一点这个小时内所有的数据；输入“2016-11-11 13：06”，将查询出这一分钟内的所有数据。*
-page.currentPage  #(the first page is 1)
-page.pageSize
-</pre>
-
-* JSON格式：**以浏览器实际输出为准**
-<pre>
-[
-    {
-        "id": 501,
-        "createTime": 1478850360000, #该条数据创建的时间
-        "topInfo": "*** " #linux系统top命令运行之后显示的数据，每一行以回车符结尾
-    },
-    {
-        "id": 502,
-        "createTime": 1478850363000,
-        "topInfo": "** "
-    }
-]
-</pre>
-
-##1-2、获取在linux系统中运行top命令显示出来的数据
-* http://localhost:8080/assist/sys/info
-
-* 参数：无
-
-* JSON格式：
-<pre>
-{
-    "id": 0,
-    "createTime": 1478939443070,
-    "topInfo": "××××" #linux系统top命令运行之后显示的数据，每一行以回车符结尾
-}
-</pre>
-
-##2-1、获取参加调查问卷的总人数
-* http://localhost:8080/assist/visiting/totalCount
-* 参数：无
-* 返回数据JSON格式：一个整数
-
-##2-2、获取正在参加调查问卷的人数
-* http://localhost:8080/assist/visiting/onlineCount
-* 参数：无
-* 返回数据的JSON格式：一个整数
-
-##2-3、获取参加过调查问卷的全国各省统计数据
+# 1、获取参加过调查问卷的全国各省统计数据
 * http://localhost:8080/assist/visiting/statistic
+* method: GET
 * 参数：无
 
 * 返回数据的JSON格式：
 {"广东省":2,"上海市‚":1,"北京市":1"}
 
+# 2、获取正在参加调查问卷的人数
+* http://localhost:8080/assist/visiting/onlineCount
+* method: GET
+* 参数：无
+* 返回数据的JSON格式：一个整数
 
-##3-1、查询“被调查者”的相关信息，这里用到了组合条件查询
+# 3 query ip list and count by place name
+* http://localhost:8080/assist/visiting/queryByAddr
+* method:GET
+* query condition: 
+ ```
+ {remark: **} #address
+ ``` 
+ 
+* return: {ips:[{12.12.12.12},{23.23.23.23},{43.34.34.34}], count:**}
+
+# 4、查询“被调查者”的相关信息，这里用到了组合条件查询
 * http://localhost:8080/assist/respondent/search?school=u&nationality=han
 * 参数，即查询条件：
 <pre>
@@ -70,39 +32,50 @@ school #学校
 education #教育
 nationality #民族
 major #专业
+residence
+gender
 page.currentPage #(the first page is 1)
 page.pageSize #每一页的条数（大小）
 </pre>
   
-* 返回数据的JSON格式 **以浏览器实际输出为准**
-<pre>
-[
-    {
-        "id": 1,
-        "name": "liangyihuai",
-        "gender": null,
-        "school": "cqupt",
-        "education": "benke",
-        "major": null,
-        "nationality": "hanzu",
-        "residence": null, #户口类型
-        "surveyFinish": 0 #问卷完成程度
-    },
-    {
-        "id": 2,
-        "name": null,
-        "gender": null,
-        "school": "cqupt",
-        "education": null,
-        "major": null,
-        "nationality": "hanzu",
-        "residence": null,
-        "surveyFinish": 0
-    }
-]
-</pre>
+* 返回数据的JSON格式
 
-##3-2导出（下载）
+```
+{
+    "pageSize": 10,
+    "currentPage": 0,
+    "start": 0,
+    "itemCount": 4,
+    "pageCount": 1,
+    "data": [
+        {
+            "id": 1,
+            "name": "liangyihuai",
+            "gender": "nan",
+            "school": "cqupt",
+            "education": "benke",
+            "major": "jisuanji",
+            "nationality": "hanzu",
+            "residence": "nongye", #户口类型
+            "surveyFinish": 1 #问卷完成程度
+        },
+        {
+            "id": 5,
+            "name": "liangyihuai",
+            "gender": "nan",
+            "school": "cqupt",
+            "education": "benke",
+            "major": "jisuanji",
+            "nationality": "hanzu",
+            "residence": "nongye",
+            "surveyFinish": 5
+        }  "surveyFinish": 11
+       
+    ]
+}
+```
+
+# 5 导出（下载）
 * http://localhost:8080/assist/respondent/download
 * 参数，即查询条件： **注意：这里不能使用ajax发送请求，原因是使用ajax请求也意味着使用ajax接收数据。**
 * 请求方式: GET
@@ -111,7 +84,32 @@ school #学校
 education #教育
 nationality #民族
 major #专业
+residence
+gender
+page.currentPage #(the first page is 1)
+page.pageSize #每一页的条数（大小）
 </pre>
   
 * 返回数据:
 自动弹出下载框。
+
+# 6、获取在linux系统中运行top命令显示出来的数据
+* http://localhost:8080/assist/sys/info2
+
+* 参数：无
+
+* JSON格式：
+<pre>
+{
+    "cpu":xxx,
+    "memory":xxxx,
+    "io":xxx,
+    "swap":xxx,
+    "id": 0,
+    "createTime": 1478939443070,
+    "process": "××××" #linux系统top命令运行之后显示的数据，每一行以回车符结尾
+}
+</pre>
+
+***
+
