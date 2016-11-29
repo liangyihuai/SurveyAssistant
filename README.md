@@ -1,4 +1,8 @@
-# This page is edited by Michael! The project name is ***SurveyAssistant***
+#Project:*SurveyAssistant*
+
+***
+the following is API of the project :)
+***
 
 # 1、获取参加过调查问卷的全国各省统计数据
 * http://localhost:8080/assist/visiting/statistic
