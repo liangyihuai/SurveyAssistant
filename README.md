@@ -22,7 +22,7 @@
  {remark: **} #address
  ``` 
  
-* return: {ips:[{12.12.12.12},{23.23.23.23},{43.34.34.34}], count:**}
+* return: {ips:[{12.12.12.12},{23.23.23.23},{43.34.34.34}]}
 
 # 4、查询“被调查者”的相关信息，这里用到了组合条件查询
 * http://localhost:8080/assist/respondent/search?school=u&nationality=han
