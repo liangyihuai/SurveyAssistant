@@ -3,8 +3,7 @@ package com.huai.assist.utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by liangyh on 10/12/16.
@@ -25,6 +24,8 @@ public class IPUtils {
 
         List<String> result = new ArrayList<String>();
 
+        Set<String> ipSet = new HashSet<String>();
+
         Runtime runtime = Runtime.getRuntime();
         BufferedReader in = null;
         try {
@@ -34,7 +35,7 @@ public class IPUtils {
 
             String str;
             while((str = in.readLine()) != null && !"".equals(str.trim())){
-                result.add(str);
+                ipSet.add(str);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,6 +46,7 @@ public class IPUtils {
                 e.printStackTrace();
             }
         }
+        result.addAll(ipSet);
         return result;
     }
 

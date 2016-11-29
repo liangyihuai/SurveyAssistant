@@ -13,15 +13,15 @@
         </foreach>
     </insert>
 
-    <select id="getAllIPs" resultType="java.lang.String">
-        SELECT ip FROM ip;
+    <select id="getAllIPsAddr" resultType="com.huai.assist.pojo.IPAddr">
+        SELECT * FROM ip;
     </select>
 
     <select id="getCountGroupByAddr" resultType="java.util.Map">
         SELECT remark AS addr, COUNT(remark) AS addrCount FROM ip GROUP BY remark
     </select>
 
-    <select id="getIps" parameterType="java.lang.String" resultType="java.lang.String">
+    <!--<select id="getIps" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT ip AS ips FROM ip WHERE remark LIKE '${addr}%'
-    </select>
+    </select>-->
 </mapper>

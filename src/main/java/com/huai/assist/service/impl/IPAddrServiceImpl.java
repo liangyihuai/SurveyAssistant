@@ -3,7 +3,6 @@ package com.huai.assist.service.impl;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Interner;
 import com.huai.assist.pojo.IPAddr;
 import com.huai.assist.repository.IPAddrMapper;
 import com.huai.assist.service.IPAddrService;
@@ -27,6 +26,13 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
     @Autowired
     private IPAddrMapper iPAddrMapper;
 
+    /*the key is IP, the value is address*/
+    private static final Map<String, String> allIPsCache = new HashMap<>();
+
+    /*the value is address, the key is IPs, it store the ip the host have known */
+    private static final Map<String, Set<String>> onlineIpAddrCache = new HashMap<>();
+
+    private static final String UNKNOWN = "UK";
 
     public int currentVisitingCount() {
         List<String> ips = IPUtils.getRemoteIPAddr(80);
@@ -54,9 +60,22 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
         return new HashMap<String, Integer>(0);
     }
 
-    //query IPs by address
+    /**
+     * query IPs by address
+     */
     public List<String> getIps(String addr) {
-        return iPAddrMapper.getIps(addr);
+        if(addr == null){
+            return new ArrayList<String>(0);
+        }
+
+        Set<String> ips = getOnlineIPs(addr);
+        List<String> result = new ArrayList<>();
+        if(ips != null)result.addAll(ips);
+//-------------------------------------
+        System.out.println("-------------------------------");
+        System.err.println(result);
+
+        return result;
     }
 
     /**
@@ -97,25 +116,39 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
                 }
             });
 
-    public List<String> getAllIPAdds(){
-        return iPAddrMapper.getAllIPs();
+    public List<IPAddr> getAllIPAdds(){
+        return iPAddrMapper.getAllIPsAddr();
     }
 
-    @Scheduled(cron="0/20 * *  * * ? ")   //每15秒执行一次
+    @Scheduled(cron="0/15 * *  * * ? ")   //每15秒执行一次
     public void saveIPsByIPStrs() {
-        List<String> ips = IPUtils.getRemoteIPAddr(80);
+//        List<String> ips = IPUtils.getRemoteIPAddr(80);
+
+        List<String> ips = new ArrayList<>();
+        ips.add("59.35.122.17");
+        ips.add("59.35.122.16");
+        ips.add("111.13.101.207");
         saveIPsByIPStrs(ips);
     }
 
-    public int saveIPsByIPStrs(List<String> ips){
+    private int saveIPsByIPStrs(List<String> ips){
         List<IPAddr> list = new ArrayList<IPAddr>();
+        onlineIpAddrCache.clear();
         for(String ip : ips){
-            IPAddr newIpAddr = getIPAddr(ip);
+            IPAddr newIpAddr = createAddrObjectNotExistsBefore(ip);
 
             if(newIpAddr != null){
                 list.add(newIpAddr);
+                allIPsCache.put(newIpAddr.getIp(), newIpAddr.getRemark());
+                addOnlineIpAddr(newIpAddr.getRemark(), newIpAddr.getIp());
+            }else{
+                allIPsCache.put(ip, UNKNOWN);
+                if(allIPsCache.containsKey(ip)){
+                    addOnlineIpAddr(allIPsCache.get(ip), ip);
+                }else{
+                    addOnlineIpAddr(UNKNOWN, ip);
+                }
             }
-            ipSet.add(ip);
         }
         if(list.size() > 0){
             return saveIPsByIPAddrs(list);
@@ -129,7 +162,7 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
      * @param ip
      * @return
      */
-    public IPAddr getIPAddr(String ip){
+    private IPAddr createAddrObjectNotExistsBefore(String ip){
         if(containsIPAddr(ip)) return null;
 
         String addr = AddressUtils.getAddressByIP(ip);
@@ -143,23 +176,47 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
         return null;
     }
 
-    public int saveIPsByIPAddrs(List<IPAddr> ipAddrs) {
+    private int saveIPsByIPAddrs(List<IPAddr> ipAddrs) {
         return this.iPAddrMapper.saveIPs(ipAddrs);
     }
 
-    private static final Set<String> ipSet = new HashSet<String>();
+
     private boolean containsIPAddr(String ip){
-        if(ipSet.contains(ip)){
+        if(allIPsCache.containsKey(ip)){
             return true;
         }
         return false;
     }
 
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("---------initial ip set after properties set!-------");
-        List<String> ips = getAllIPAdds();
-        for(String ip: ips){
-            ipSet.add(ip);
+
+    private void addOnlineIpAddr(String address, String ip){
+        if(address == null|| ip == null)return ;
+
+        if(address.length() > 2) address = address.substring(0, 2);
+
+        if(onlineIpAddrCache.containsKey(address)){
+            onlineIpAddrCache.get(address).add(ip);
+        }
+        else{
+            Set<String> ips = new HashSet<>();
+            ips.add(ip);
+            onlineIpAddrCache.put(address, ips);
         }
     }
+
+    private Set<String> getOnlineIPs(String addr){
+        if(addr == null) return null;
+        if(addr.length() > 2) addr = addr.substring(0, 2);
+        return onlineIpAddrCache.get(addr);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("---------initial ip set after properties set!-------");
+        List<IPAddr> ips = getAllIPAdds();
+        for(IPAddr addr: ips){
+            allIPsCache.put(addr.getIp(), addr.getRemark());
+        }
+    }
+
 }

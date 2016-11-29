@@ -15,9 +15,9 @@ public interface IPAddrMapper{
 
     int saveIPs(@Param("ipAdds") List<IPAddr> ipAddrs);
 
-    List<String> getAllIPs();
+    List<IPAddr> getAllIPsAddr();
 
     List<Map<String, Object>> getCountGroupByAddr();
 
-    List<String> getIps(@Param("addr") String addr);
+   /* List<String> getIps(@Param("addr") String addr);*/
 }

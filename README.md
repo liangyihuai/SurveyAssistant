@@ -14,7 +14,7 @@
 * 参数：无
 * 返回数据的JSON格式：一个整数
 
-# 3 query ip list and count by place name
+# 3 query ip list by address name which ** is online **
 * http://localhost:8080/assist/visiting/queryByAddr
 * method:GET
 * query condition: 
@@ -22,7 +22,7 @@
  addr  # * address *
  ``` 
  
-* return: {ips:[{12.12.12.12},{23.23.23.23},{43.34.34.34}]}
+* return: ["111.13.101.207","59.35.122.17","59.35.122.16"]
 
 # 4、查询“被调查者”的相关信息，这里用到了组合条件查询
 * http://localhost:8080/assist/respondent/search?school=u&nationality=han

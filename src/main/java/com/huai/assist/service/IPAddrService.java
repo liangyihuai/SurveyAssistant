@@ -13,7 +13,6 @@ public interface IPAddrService {
 
     int totalCount();
 
-    int saveIPsByIPStrs(List<String> ips);
 
     void saveIPsByIPStrs();
 
