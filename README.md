@@ -19,7 +19,7 @@
 * method:GET
 * query condition: 
  ```
- addr: ** #address
+ addr  # * address *
  ``` 
  
 * return: {ips:[{12.12.12.12},{23.23.23.23},{43.34.34.34}]}
