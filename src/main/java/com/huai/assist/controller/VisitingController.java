@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,6 +40,12 @@ public class VisitingController {
     @RequestMapping(value = "/statistic", method = RequestMethod.GET)
     public Map<String, Integer> statisticIPAddr(){
         return iPAddrService.getCountGroupByAddr();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/queryByAddr", method = RequestMethod.GET)
+    public List<String> queryIPsByAddr(String addr){
+        return iPAddrService.getIps(addr);
     }
 
 }

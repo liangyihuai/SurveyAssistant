@@ -22,4 +22,6 @@ public interface IPAddrService {
      * @return the key indicates address, the value indicates count;
      */
     Map<String, Integer> getCountGroupByAddr();
+
+    List<String> getIps(String addr);
 }

@@ -54,6 +54,11 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
         return new HashMap<String, Integer>(0);
     }
 
+    //query IPs by address
+    public List<String> getIps(String addr) {
+        return iPAddrMapper.getIps(addr);
+    }
+
     /**
      * guava缓存
      */

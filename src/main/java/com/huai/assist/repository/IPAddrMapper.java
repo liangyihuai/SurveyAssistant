@@ -18,4 +18,6 @@ public interface IPAddrMapper{
     List<String> getAllIPs();
 
     List<Map<String, Object>> getCountGroupByAddr();
+
+    List<String> getIps(@Param("addr") String addr);
 }
