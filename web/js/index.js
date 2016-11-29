@@ -83,6 +83,9 @@ function showSearchSysInfoDetail(id) {
     showSysInfo(tempSearchSysInfo_global[id].topInfo);
 
     clearXFlag();
+    //top info border style
+    var topInfo = document.getElementById("topInfoID");
+    topInfo.style.border = "5px dashed blue";
 
     var tableTr = document.getElementById("search-id"+id);
     //if the element is exists
@@ -90,13 +93,27 @@ function showSearchSysInfoDetail(id) {
         tableTr.childNodes.item(1).innerHTML = "X";
         return ;
     }
+    //insert table cell, and the innerHtml is X flag
     var newCol = tableTr.insertCell(1);
     newCol.className = "clear-td-class";
     newCol.innerHTML = "X";
 
     //?????????????????
     newCol.setAttribute("onclick", "clearShownSearchSysInfoDetail()");
-    newCol.setAttribute("style", "cursor:pointer");
+    // newCol.setAttribute("style", "cursor:pointer");
+    newCol.style.cursor = "pointer";
+    newCol.style.color = "#c52d2f";
+    newCol.style.fontWeight = "bold";
+
+}
+
+function clearShownSearchSysInfoDetail() {
+    setCycling(true);
+    clearXFlag();
+
+    //clear border
+    var topInfo = document.getElementById("topInfoID");
+    topInfo.style.border = "";
 }
 
 //clear other cell's "x" flag
@@ -108,10 +125,6 @@ function clearXFlag() {
     }
 }
 
-function clearShownSearchSysInfoDetail() {
-    setCycling(true);
-    clearXFlag();
-}
 
 function getSearchPath(currentPage, pageSize) {
     if(currentPage == null )currentPage = 1;

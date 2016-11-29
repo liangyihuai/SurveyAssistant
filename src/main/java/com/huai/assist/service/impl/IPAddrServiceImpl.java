@@ -1,5 +1,9 @@
 package com.huai.assist.service.impl;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Interner;
 import com.huai.assist.pojo.IPAddr;
 import com.huai.assist.repository.IPAddrMapper;
 import com.huai.assist.service.IPAddrService;
@@ -11,6 +15,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by liangyh on 11/5/16.
@@ -31,24 +37,68 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
     }
 
     public int totalCount() {
-        return iPAddrMapper.totalCount();
+        try {
+            return totalCountCache.get("key");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
+
+    public Map<String, Integer> getCountGroupByAddr() {
+        try {
+            return countGroupByAddrCache.get("key");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return new HashMap<String, Integer>(0);
+    }
+
+    /**
+     * guava缓存
+     */
+    private final LoadingCache<String, Map<String, Integer>> countGroupByAddrCache = CacheBuilder.newBuilder()
+            .maximumSize(300).expireAfterWrite(5, TimeUnit.MINUTES)
+            .build(new CacheLoader<String, Map<String, Integer>>() {
+
+                public Map<String, Integer> load(String s) throws Exception {
+                    List<Map<String,Object>> mapList = iPAddrMapper.getCountGroupByAddr();
+
+                    if(mapList.size() == 0)return new HashMap<String, Integer>(0);
+
+                    Map<String, Integer> resultMap = new HashMap<String, Integer>(mapList.size());
+
+                    Iterator<Map<String, Object>> listIter = mapList.listIterator();
+                    while(listIter.hasNext()){
+                        Map<String, Object> tempMap = listIter.next();
+
+                        String key = (String)tempMap.get("addr");
+                        Integer value = ((Long)tempMap.get("addrCount")).intValue();
+
+                        resultMap.put(key, value);
+                    }
+                    return resultMap;
+                }
+            });
+
+    /**
+     * guava缓存
+     */
+    private final LoadingCache<String, Integer> totalCountCache = CacheBuilder.newBuilder()
+            .maximumSize(300).expireAfterWrite(5, TimeUnit.MINUTES)
+            .build(new CacheLoader<String, Integer>() {
+                public Integer load(String key) throws Exception {
+                    return iPAddrMapper.totalCount();
+                }
+            });
 
     public List<String> getAllIPAdds(){
         return iPAddrMapper.getAllIPs();
     }
 
-    @Scheduled(cron="0/15 * *  * * ? ")   //每15秒执行一次
+    @Scheduled(cron="0/20 * *  * * ? ")   //每15秒执行一次
     public void saveIPsByIPStrs() {
         List<String> ips = IPUtils.getRemoteIPAddr(80);
-        System.out.println("-----------save ips By p strs--------");
-//        String[] ipStr = {"114.80.68.233","111.13.101.208","202.96.128.86",
-//                "59.35.122.17",""};
-//
-//        List<String> ips = new ArrayList<String>(1);
-//        for(String ip: ipStr){
-//            ips.add(ip);
-//        }
         saveIPsByIPStrs(ips);
     }
 
@@ -98,25 +148,6 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
             return true;
         }
         return false;
-    }
-
-    public Map<String, Integer> getCountGroupByAddr() {
-        List<Map<String,Object>> mapList = iPAddrMapper.getCountGroupByAddr();
-
-        if(mapList.size() == 0)return new HashMap<String, Integer>(0);
-
-        Map<String, Integer> resultMap = new HashMap<String, Integer>(mapList.size());
-
-        Iterator<Map<String, Object>> listIter = mapList.listIterator();
-        while(listIter.hasNext()){
-            Map<String, Object> tempMap = listIter.next();
-
-            String key = (String)tempMap.get("addr");
-            Integer value = ((Long)tempMap.get("addrCount")).intValue();
-
-            resultMap.put(key, value);
-        }
-        return resultMap;
     }
 
     public void afterPropertiesSet() throws Exception {

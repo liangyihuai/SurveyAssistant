@@ -24,7 +24,9 @@ public class VisitingController {
     @ResponseBody
     @RequestMapping(value = "/totalCount", method = RequestMethod.GET)
     public int getTotalVisitedCount(){
-        return iPAddrService.totalCount();
+        int result = iPAddrService.totalCount();
+        System.err.println("---------------"+result);
+        return result;
     }
 
     @ResponseBody
