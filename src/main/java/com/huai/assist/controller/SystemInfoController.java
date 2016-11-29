@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liangyh on 10/25/16.
@@ -30,6 +31,12 @@ public class SystemInfoController {
         systemInfo.setTopInfo(this.systemInfoService.getTopInfo());
 
         return systemInfo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/info2", method = RequestMethod.GET)
+    public Map<String, String> getSystemInfo2(){
+        return this.systemInfoService.getTopInfo2();
     }
 
     @ResponseBody

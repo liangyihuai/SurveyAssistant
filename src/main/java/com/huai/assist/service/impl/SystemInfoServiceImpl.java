@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by liangyh on 10/20/16.
@@ -26,7 +24,6 @@ public class SystemInfoServiceImpl implements SystemInfoService {
     @Autowired
     private SystemInfoMapper systemInfoMapper;
 
-    /*@Scheduled(cron="0/5 * *  * * ? ")   //每10秒执行一次*/
     public String getTopInfo() {
         return SystemInfoUtils.getCUP_Memory_Thread_Info();
     }
@@ -63,7 +60,7 @@ public class SystemInfoServiceImpl implements SystemInfoService {
         return result;
     }
 
-    @Scheduled(cron="0/45 * *  * * ? ")   //每xx秒执行一次
+    /*@Scheduled(cron="0/45 * *  * * ? ")   //每xx秒执行一次*/
     private void save(){
         SystemInfo systemInfo = new SystemInfo();
         systemInfo.setTopInfo(getTopInfo());
@@ -74,4 +71,67 @@ public class SystemInfoServiceImpl implements SystemInfoService {
         if(systemInfo == null)return 0;
         return systemInfoMapper.save(systemInfo);
     }
+
+    public Map<String, String> getTopInfo2(){
+        return parseTopInfo(null);
+    }
+
+    private Map<String, String> parseTopInfo(String str){
+        Map<String, String> result = new HashMap<>();
+        int cpu = (int)(Math.random()*10) + 20;
+        int memory = (int)(Math.random()*30) + 20;
+        int io = (int)(Math.random())*100;
+        int swap = (int)(Math.random()*5) + 5;
+
+        String info = "";
+
+        if(flag++ == 1){
+            info = info1;
+        }else if(flag++ == 2){
+            info = info2;
+        }else{
+            info = info3;
+            flag++;
+        }
+
+        result.put("cpu", String.valueOf(cpu));
+        result.put("memory", String.valueOf(memory));
+        result.put("io", String.valueOf(io));
+        result.put("swap", String.valueOf(swap));
+        result.put("process", info);
+        return result;
+    }
+
+    private static int flag = 1;
+
+    private final static String info1 =
+            "  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n" +
+                    "    1 root      20   0   35048   4524   2992 S 0.000 0.443   0:31.76 systemd\n" +
+                    "    2 root      20   0       0      0      0 S 0.000 0.000   0:00.00 kthreadd\n" +
+                    "    3 root      20   0       0      0      0 S 0.000 0.000   0:02.90 ksoftirqd+\n" +
+            "    5 root       0 -20       0      0      0 S 0.000 0.000   0:00.00 kworker/0+\n" +
+            "    7 root      20   0       0      0      0 S 0.000 0.000   0:05.24 rcu_sched\n" +
+            "    8 root      20   0       0      0      0 S 0.000 0.000   0:09.00 rcuos/0\n" +
+            "    9 root      20   0       0      0      0 S 0.000 0.000   0:00.00 rcu_bh\n" +
+            "   10 root      20   0       0      0      0 S 0.000 0.000   0:00.00 rcuob/0\n";
+
+    private static final String info2 = "  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n" +
+            "    1 root      20   0   35048   4524   2992 S 0.000 0.443   0:31.77 systemd\n" +
+            "    5 root       0 -20       0      0      0 S 0.000 0.000   0:00.00 kworker/0+\n" +
+            "    3 root      20   0       0      0      0 S 0.000 0.000   0:02.90 ksoftirqd+\n" +
+            "    8 root      20   0       0      0      0 S 0.000 0.000   0:09.01 rcuos/0\n" +
+            "    2 root      20   0       0      0      0 S 0.000 0.000   0:00.00 kthreadd\n" +
+            "    7 root      20   0       0      0      0 S 0.000 0.000   0:05.24 rcu_sched\n" +
+            "    9 root      20   0       0      0      0 S 0.000 0.000   0:00.00 rcu_bh\n" +
+            "   10 root      20   0       0      0      0 S 0.000 0.000   0:00.00 rcuob/0\n";
+
+    private static final String info3 ="  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n" +
+            "    1 root      20   0   35048   4524   2992 S 0.000 0.443   0:31.78 systemd\n" +
+            "    2 root      20   0       0      0      0 S 0.000 0.000   0:00.00 kthreadd\n" +
+            "    3 root      20   0       0      0      0 S 0.000 0.000   0:02.90 ksoftirqd+\n" +
+            "    5 root       0 -20       0      0      0 S 0.000 0.000   0:00.00 kworker/0+\n" +
+            "    7 root      20   0       0      0      0 S 0.000 0.000   0:05.25 rcu_sched\n" +
+            "    8 root      20   0       0      0      0 S 0.000 0.000   0:09.01 rcuos/0\n" +
+            "    9 root      20   0       0      0      0 S 0.000 0.000   0:00.00 rcu_bh\n" +
+            "   10 root      20   0       0      0      0 S 0.000 0.000   0:00.00 rcuob/0\n";
 }

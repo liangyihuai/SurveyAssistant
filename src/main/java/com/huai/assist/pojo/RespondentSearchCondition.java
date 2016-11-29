@@ -8,6 +8,25 @@ public class RespondentSearchCondition {
     private String education; //教育水平
     private String major; //专业
     private String nationality; //民族
+    private String residence;
+    private String gender;
+
+    public String getResidence() {
+        return residence;
+    }
+
+    public void setResidence(String residence) {
+        this.residence = residence;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     private Page page;
 
     public String getSchool() {

@@ -71,9 +71,6 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
         Set<String> ips = getOnlineIPs(addr);
         List<String> result = new ArrayList<>();
         if(ips != null)result.addAll(ips);
-//-------------------------------------
-        System.out.println("-------------------------------");
-        System.err.println(result);
 
         return result;
     }

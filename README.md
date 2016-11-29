@@ -1,4 +1,4 @@
-# SurveyAssistant
+# This page is edited by Michael! The project name is ***SurveyAssistant***
 
 # 1、获取参加过调查问卷的全国各省统计数据
 * http://localhost:8080/assist/visiting/statistic
@@ -19,7 +19,7 @@
 * method:GET
 * query condition: 
  ```
- addr  # * address *
+ addr  # * address *, you can try it with *** ?addr=UK ***
  ``` 
  
 * return: ["111.13.101.207","59.35.122.17","59.35.122.16"]
@@ -105,11 +105,12 @@ page.pageSize #每一页的条数（大小）
     "memory":xxxx,
     "io":xxx,
     "swap":xxx,
-    "id": 0,
-    "createTime": 1478939443070,
     "process": "××××" #linux系统top命令运行之后显示的数据，每一行以回车符结尾
 }
 </pre>
 
 ***
 
+                                                    *LiangYiHuai*
+                                                    *2016-11-29*
+                                                    *:)*

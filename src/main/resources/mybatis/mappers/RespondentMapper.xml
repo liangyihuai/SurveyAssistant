@@ -15,6 +15,12 @@
         <if test="major != null and major != ''">
             AND major like '${major}%'
         </if>
+        <if test="residence != null and residence != ''">
+            AND residence like '${residence}%'
+        </if>
+        <if test="gender != null and gender != ''">
+            AND gender = #{gender}
+        </if>
     </sql>
 
     <select id="getCount" parameterType="com.huai.assist.pojo.RespondentSearchCondition"
