@@ -63,7 +63,7 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
     /**
      * query IPs by address
      */
-    public List<String> getIps(String addr) {
+    public List<String> getOnlineIps(String addr) {
         if(addr == null){
             return new ArrayList<String>(0);
         }
@@ -73,6 +73,13 @@ public class IPAddrServiceImpl implements IPAddrService, InitializingBean{
         if(ips != null)result.addAll(ips);
 
         return result;
+    }
+
+    @Override
+    public List<String> getIps(String addr) {
+        if(addr == null)return new ArrayList<>(0);
+        if(addr.length() > 2)addr = addr.substring(0, 2);
+        return iPAddrMapper.getIps(addr);
     }
 
     /**

@@ -12,18 +12,12 @@ the following is API of the project :)
 * 返回数据的JSON格式：
 {"广东省":2,"上海市‚":1,"北京市":1"}
 
-# 2、获取正在参加调查问卷的人数
-* http://localhost:8080/assist/visiting/onlineCount
-* method: GET
-* 参数：无
-* 返回数据的JSON格式：一个整数
-
-# 3 query ip list by address name which ** is online **
+# 3 query ip list by address name
 * http://localhost:8080/assist/visiting/queryByAddr
 * method:GET
 * query condition: 
  ```
- addr  # * address *, you can try it with *** ?addr=UK ***
+ addr  
  ``` 
  
 * return: ["111.13.101.207","59.35.122.17","59.35.122.16"]

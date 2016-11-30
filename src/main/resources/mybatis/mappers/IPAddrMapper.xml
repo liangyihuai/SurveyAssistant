@@ -21,7 +21,7 @@
         SELECT remark AS addr, COUNT(remark) AS addrCount FROM ip GROUP BY remark
     </select>
 
-    <!--<select id="getIps" parameterType="java.lang.String" resultType="java.lang.String">
+    <select id="getIps" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT ip AS ips FROM ip WHERE remark LIKE '${addr}%'
-    </select>-->
+    </select>
 </mapper>

@@ -19,5 +19,5 @@ public interface IPAddrMapper{
 
     List<Map<String, Object>> getCountGroupByAddr();
 
-   /* List<String> getIps(@Param("addr") String addr);*/
+    List<String> getIps(@Param("addr") String addr);
 }

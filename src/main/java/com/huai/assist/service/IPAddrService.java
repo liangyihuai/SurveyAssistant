@@ -22,5 +22,7 @@ public interface IPAddrService {
      */
     Map<String, Integer> getCountGroupByAddr();
 
+    List<String> getOnlineIps(String addr);
+
     List<String> getIps(String addr);
 }
