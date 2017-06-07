@@ -1,4 +1,61 @@
-#写在前面：
+## 这个系统的目的：
+这是本人本科的一门实验课，要求做一个系统，全班分为多个组，每个组的系统需求是相同的。所以，这个系统算是一个“应付性”的作业了，哈哈哈！因为本系统从头到尾都是一个人编写的（虽然一个组中有5、6人），所以有权把它共享出来。如果有师弟师学妹能找到这个现成的代码，也算是一种缘分吧！
+
+## 系统功能
+系统功能1：运行环境模块：辅助系统要求能接入Linux服务器，监控CPU、内存、I/O、交换空间、进程状况等的实时情况，类似top命令执行结果。并将结果保存到数据库中。
+
+系统功能2：实时访问情况模块：辅助系统要能监控Apache服务运行情况，实时反映当前系统填答人数，将访问系统的IP地址保存到数据库中，对IP分省、自.治区、直辖市进行相应统计查询。
+
+系统功能3：问卷填答情况模块：为高校提供查询功能，能够按院校、学历层次、专业、性别、民族、户口类别等，查询当前已经完成问卷、未完成问卷、部分完成问卷的学生名单，并能导出为Excel、PDF等常用格式，便于学校进行填答督促。
+
+
+## 环境：
+
+运行环境：open SUSE leap 42.1
+开发环境：Intellij IDEA
+开发语言：JavaEE
+数据库：MySQL
+
+## 数据库见表语句
+
+```
+CREATE DATABASE SurveyAssistant;
+CREATE TABLE ip
+(
+    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    ip VARCHAR(35),
+    flag INT(11),
+    remark VARCHAR(30)
+);
+CREATE TABLE user
+(
+    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    userName VARCHAR(30),
+    password VARCHAR(30),
+    level INT(11),
+    createTime DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE systemInfo
+(
+    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    topInfo TEXT
+);
+CREATE TABLE respondent
+(
+    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(30),
+    nationality VARCHAR(30),
+    school VARCHAR(70),
+    education VARCHAR(30),
+    major VARCHAR(70),
+    gender VARCHAR(10),
+    residence VARCHAR(30),
+    surveyFinish INT(11)
+);
+```
+
+### 相关说明：
 * 1、这里我所写的url，可以直接复制到浏览器，回车。（有一些需要修改一下参数的value :）），举一个栗子：http://localhost:8080/assist/sys/search?timeStr=2016-11-11&page.pageSize=2&page.currentPage=1，这个url的参数有三个，可以直接复制到浏览器中。
 * 2、下面我用如1-1、2-1这样的表示不同的段落，第一个数字表示它将会用于哪个功能模块。
 * 3、**返回的json格式以浏览器实际输出为准**，具体做法为：直接复制url到浏览器地址栏中回车。
